@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+ESC-50-master/**
+data/**/
+!data/train/.gitkeep
+!data/valid/.gitkeep
+!data/test/.gitkeep
+.DS_Store
+Thumbs.db
