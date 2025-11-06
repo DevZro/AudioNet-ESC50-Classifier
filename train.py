@@ -76,3 +76,10 @@ for epoch in range(num_epochs):
     print(f"Epoch {epoch}")
     print(f"    Loss: {train_loss/len(train_loader)}")
     print(f"    Training Accuracy: {train_acc}, Validation Accuracy: {valid_acc}")
+
+torch.save(
+    {
+    'audionet_state_dict': audionet.state_dict(),
+    'optimizer_state_dict': optimizer.state_dict(),
+    }
+    , "audionet_checkpoint.pth")
