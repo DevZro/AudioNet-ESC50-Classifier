@@ -99,7 +99,7 @@ Training on CPU is supported but can take a long time. Use a CUDA-enabled GPU fo
 | Dataset             | ESC-50                     |
 | Model Architecture  | EfficientNet-B4 + ReLU Head |
 | GPU Used            | NVIDIA T4                  |
-| Best Test Accuracy  | ~57%                       |
+| Best Test Accuracy  | ~67%                       |
 
 ---
 
