@@ -2,6 +2,7 @@ import torch
 from torch import optim
 from torch import nn
 from torch.utils.data import DataLoader
+from torch.optim import lr_scheduler
 from utils import ESC50
 from models.base_model import AudioNet
 
@@ -17,9 +18,11 @@ audionet = AudioNet()
 audionet = audionet.to(device)
 features = list(audionet.backbone.features.children())
 
-for layer in features[:len(features)//2]:
-    for param in layer.parameters():
-        param.requires_grad = False
+early_layers = list(audionet.features.children())[:len(features)//2]
+
+early_params = []
+for layer in early_layers:
+    early_params += list(layer.parameters())
 
 mid_and_deep_layers = features[len(features)//2:]
 
@@ -47,11 +50,14 @@ def calculate_accuracy(model, dataloader, device):
 
 
 optimizer = optim.Adam([
-    {'params': mid_and_deep_params, 'lr': 1e-6},
-    {'params': audionet.backbone.classifier.parameters(), 'lr': 1e-4} 
+    {"params": early_params, 'lr': 1e-8},
+    {"params": mid_and_deep_params, 'lr': 1e-5},
+    {"params": audionet.classifier.parameters(), 'lr': 3e-4} # Karpathy's Constant to the rescue
 ])
-loss_fn = nn.CrossEntropyLoss()
-num_epochs = 30
+scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=30)
+
+loss_fn = nn.CrossEntropyLoss(label_smoothing=0.1)
+num_epochs = 50
 
 for epoch in range(num_epochs):
     audionet.train()
@@ -69,6 +75,8 @@ for epoch in range(num_epochs):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+
+    scheduler.step()
 
     train_acc = calculate_accuracy(audionet, train_loader, device)
     valid_acc = calculate_accuracy(audionet, valid_loader, device)
