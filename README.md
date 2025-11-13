@@ -1,6 +1,6 @@
 # 🎧 AudioNet ESC-50 Classifier
 
-This repository contains a complete pipeline for training an audio classification model on the [ESC-50 dataset](https://github.com/karoldvl/ESC-50). It includes data preprocessing (spectrogram generation), model training, and utilities for conditional GPU usage. The model is based on EfficientNet-B4 and achieves up to **57% test accuracy**.
+This repository contains a complete pipeline for training an audio classification model on the [ESC-50 dataset](https://github.com/karoldvl/ESC-50). It includes data preprocessing (spectrogram generation), model training, and utilities for conditional GPU usage. The model is based on EfficientNet-B4 and achieves up to **67% test accuracy**.
 
 ---
 
